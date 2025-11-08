@@ -57,7 +57,7 @@ export async function GET () {
     {
       id: "t-1026",
       title: "Slack notifications delayed",
-      description: "Users report message alerts arriving 10–15 minutes late.",
+      description: "Users report message alerts arriving 10-15 minutes late.",
       priority: "High",
       status: "In Progress",
       assignee: "Maya Chen",
