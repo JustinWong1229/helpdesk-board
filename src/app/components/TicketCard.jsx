@@ -9,9 +9,9 @@ export default function TicketCard({ id, title, description, priority, status, a
     return (
         <div className="border rounded-lg p-4 h-full flex flex-col justify-between">
       <div>
-      <div className="text-sm text-gray-500">{description}</div>
-        <h3 className="font-medium">{title}</h3>
+        <h3 className="font-medium"> Title: {title}</h3>
         <div className="mt-1 text-lg">Status: {status}</div>
+        <div className="mt-1 text-lg">Description: {description}</div>
         <div className="mt-1 text-lg">Priority: {priority}</div>
         <div className="mt-1 text-lg">Assignee: {assignee}</div>
         <div className="mt-1 text-lg">Update Date: {updatedAt}</div>

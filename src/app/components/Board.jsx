@@ -1,14 +1,16 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import TicketList from './TicketList';
+import SearchBox from './SearchBox';
 export default function Board() {
   // Fetch state
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState(null);
   const [queue, setQueue] = useState([])
+  const [search, setSearch] = useState ('')
   const filters = { status: 'All', priority: 'All' };
-  const search = '';
+  
 
 
   useEffect (() => {
@@ -38,7 +40,12 @@ export default function Board() {
 }, []);
 
 const visibleTickets = useMemo(() => {
-    const q = (search ?? '').trim().toLowerCase();
+    const q = search.trim().toLowerCase();
+    if (!q) return tickets;
+    return tickets.filter(t =>
+        t.title.toLowerCase().includes(q) ||
+        t.description?.toLowerCase().includes(q)
+    )
   
     return tickets.filter(t => {
       const matchesStatus =
@@ -57,7 +64,7 @@ const visibleTickets = useMemo(() => {
   }, [tickets, filters, search]);
   const isEmpty = !loading && !error && visibleTickets.length === 0;
   const handleAddToQueue = (ticketId) => {
-    // Ignore if the ticket doesn't exist (or is already queued)
+    
     const found = tickets.find(t => t.id === ticketId);
     if (!found) return;
   
@@ -66,14 +73,17 @@ const visibleTickets = useMemo(() => {
   // Fix Later
   return (
     <main className="p-6">
-      
+        <SearchBox value={search} onChange={setSearch} />
 
       {loading && <p>Loading…</p>}
       {error && <p>{error}</p>} 
 
       {!loading && !error && visibleTickets.length > 0 && (
         <TicketList tickets={visibleTickets} onAddToQueue={handleAddToQueue} />
+        
       )}
+    
+    
 
       {isEmpty && <p>No tickets match your filters.</p>}
     </main>
