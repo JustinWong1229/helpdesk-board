@@ -5,6 +5,7 @@ import SearchBox from './SearchBox';
 import StatusFilter from './StatusFilter';
 import PriorityFilter from './PriorityFilter';
 import MyQueueSummary from './MyQueueSummary';
+import StatusMessage from './StatusMessage';
 export default function Board() {
   // Fetch state
   const [tickets, setTickets] = useState([]);
@@ -87,6 +88,7 @@ const handleClearQueue = () => setQueue([]);
         <SearchBox value={search} onChange={setSearch} />
         <StatusFilter value={filters.status} onChange={setStatus} />
         <PriorityFilter value={filters.priority} onChange={setPriority} />
+        <StatusMessage loading={loading} error={error} isEmpty={isEmpty} />
        
 
       {loading && <p>Loading…</p>}
