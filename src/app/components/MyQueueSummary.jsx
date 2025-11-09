@@ -19,7 +19,7 @@ export default function ({ queue = [], tickets =[], onRemove, onClear}) {
                 {titleById.get(id) ?? id}
               </div>
               <button
-                className="rounded bg-gray-200 px-2 py-1 hover:bg-gray-300"
+                className="rounded bg-red-600 px-3 py-2 text-white hover:bg-red-700 disabled:bg-gray-400"
                 onClick={() => onRemove?.(id)}
                 title="Remove from queue"
               >
