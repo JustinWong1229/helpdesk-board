@@ -4,6 +4,7 @@ import TicketList from './TicketList';
 import SearchBox from './SearchBox';
 import StatusFilter from './StatusFilter';
 import PriorityFilter from './PriorityFilter';
+import MyQueueSummary from './MyQueueSummary';
 export default function Board() {
   // Fetch state
   const [tickets, setTickets] = useState([]);
@@ -72,13 +73,21 @@ const visibleTickets = useMemo(() => {
     if (!found) return;
   
     setQueue(prev => (prev.includes(ticketId) ? prev : [...prev, ticketId]));
+
+    
   };
+  const handleRemoveFromQueue = (id) => 
+    setQueue(prev => prev.filter(tid => tid !== id));
+
+const handleClearQueue = () => setQueue([]);
+
   // Fix Later
   return (
     <main className="p-6">
         <SearchBox value={search} onChange={setSearch} />
         <StatusFilter value={filters.status} onChange={setStatus} />
         <PriorityFilter value={filters.priority} onChange={setPriority} />
+       
 
       {loading && <p>Loading…</p>}
       {error && <p>{error}</p>} 
@@ -87,6 +96,7 @@ const visibleTickets = useMemo(() => {
         <TicketList tickets={visibleTickets} onAddToQueue={handleAddToQueue} />
         
       )}
+      <MyQueueSummary queue={queue} tickets={tickets} onRemove={handleRemoveFromQueue} onClear={handleClearQueue} />
     
     
 
