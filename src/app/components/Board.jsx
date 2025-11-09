@@ -23,7 +23,7 @@ export default function Board() {
     setFilters(prev => ({...prev, priority}))
   
 
-
+// fetches the tickets
   useEffect (() => {
     let isActive = true
     async function load() {
@@ -49,7 +49,7 @@ export default function Board() {
     load ();
     return () => { isActive = false;};
 }, []);
-
+// Computes visible tickets based on search and status/priority filters
 const visibleTickets = useMemo(() => {
     const q = String(search ?? '').trim().toLowerCase();
     return tickets.filter(t => {
@@ -82,22 +82,29 @@ const visibleTickets = useMemo(() => {
 
 const handleClearQueue = () => setQueue([]);
 
-  // Fix Later
+  
   return (
     <main className="p-6">
+        {/* Search Box */}
         <SearchBox value={search} onChange={setSearch} />
+        {/* Filers */}
         <StatusFilter value={filters.status} onChange={setStatus} />
         <PriorityFilter value={filters.priority} onChange={setPriority} />
+
+        {/* Status Message */}
         <StatusMessage loading={loading} error={error} isEmpty={isEmpty} />
        
 
       {loading && <p>Loading…</p>}
       {error && <p>{error}</p>} 
 
+        {/* Ticket List */}
+
       {!loading && !error && visibleTickets.length > 0 && (
         <TicketList tickets={visibleTickets} onAddToQueue={handleAddToQueue} />
         
       )}
+      {/* Queue Summary */}
       <MyQueueSummary queue={queue} tickets={tickets} onRemove={handleRemoveFromQueue} onClear={handleClearQueue} />
     
     

@@ -1,5 +1,5 @@
 'use client'
-
+// Controlled select: value + onChange(value)
 export default function StatusFilter({value, onChange}) {
     const options = ['All', 'Open', 'In Progress', 'On Hold', 'Resolved'];
    return (

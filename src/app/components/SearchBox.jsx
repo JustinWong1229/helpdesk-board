@@ -1,5 +1,5 @@
 'use client'
-// Search Bar
+// Search Bar that filters by substring match with the title or description
 
 export default function SearchBox ({ value, options = [], onChange }) {
     return (

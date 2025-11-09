@@ -1,5 +1,6 @@
 'use client'
-
+// Shows the number of ticket in users queue
+// Allows user to remove ticket from queue and reset queue cleaars queue
 export default function ({ queue = [], tickets =[], onRemove, onClear}) {
     const titleById = new Map(tickets.map(t => [t.id, t.title]))
     const count = queue.length
