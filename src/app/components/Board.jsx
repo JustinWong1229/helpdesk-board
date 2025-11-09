@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import TicketList from './TicketList';
 import SearchBox from './SearchBox';
+import StatusFilter from './StatusFilter';
 export default function Board() {
   // Fetch state
   const [tickets, setTickets] = useState([]);
@@ -9,7 +10,11 @@ export default function Board() {
   const [error, setError]       = useState(null);
   const [queue, setQueue] = useState([])
   const [search, setSearch] = useState ('')
-  const filters = { status: 'All', priority: 'All' };
+  const [filters, setFilters] = useState({ status: 'All', priority: 'All'})
+
+   // Handlers for filters
+   const setStatus = (status) => 
+    setFilters(prev => ({...prev, status}));
   
 
 
@@ -40,27 +45,20 @@ export default function Board() {
 }, []);
 
 const visibleTickets = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return tickets;
-    return tickets.filter(t =>
-        t.title.toLowerCase().includes(q) ||
-        t.description?.toLowerCase().includes(q)
-    )
-  
+    const q = String(search ?? '').trim().toLowerCase();
     return tickets.filter(t => {
-      const matchesStatus =
-        filters.status === 'All' || t.status === filters.status;
-  
-      const matchesPriority =
-        filters.priority === 'All' || t.priority === filters.priority;
-  
-      const matchesSearch =
-        q === '' ||
-        t.title?.toLowerCase().includes(q) ||
-        t.description?.toLowerCase().includes(q);
-  
-      return matchesStatus && matchesPriority && matchesSearch;
-    });
+        const matchesStatus = filters.status === 'All' || t.status === filters.status
+       const title = String(t.title ?? '').toLowerCase()
+        const description = String (t.description ?? '').toLowerCase()
+        const matchesSearch = !q || title.includes(q) || description.includes(q)
+
+        return matchesStatus && matchesSearch 
+
+})
+ 
+
+
+
   }, [tickets, filters, search]);
   const isEmpty = !loading && !error && visibleTickets.length === 0;
   const handleAddToQueue = (ticketId) => {
@@ -74,6 +72,7 @@ const visibleTickets = useMemo(() => {
   return (
     <main className="p-6">
         <SearchBox value={search} onChange={setSearch} />
+        <StatusFilter value={filters.status} onChange={setStatus} />
 
       {loading && <p>Loading…</p>}
       {error && <p>{error}</p>} 
