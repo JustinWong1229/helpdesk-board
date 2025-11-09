@@ -4,7 +4,7 @@
 export default function SearchBox ({ value, options = [], onChange }) {
     return (
         <label className= "block">
-            <span className= "text-sm font medium">Search Box</span>
+            <span className= "text-sm font medium">Search Box: </span>
             <input
             className="mt-1 w-full rounded border px-3 py-2"
             value={value}
