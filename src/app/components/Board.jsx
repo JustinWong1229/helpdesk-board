@@ -49,6 +49,9 @@ export default function Board() {
     load ();
     return () => { isActive = false;};
 }, []);
+
+
+
 // Computes visible tickets based on search and status/priority filters
 const visibleTickets = useMemo(() => {
     const q = String(search ?? '').trim().toLowerCase();
