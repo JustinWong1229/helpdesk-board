@@ -21,6 +21,11 @@ export default function Board() {
 
    const setPriority = (priority) =>
     setFilters(prev => ({...prev, priority}))
+
+   
+    const STATUSES   = ["Open", "In Progress", "Review", "Blocked", "Done"];
+    const PRIORITIES = ["Low", "Medium", "High", "Critical"];
+
   
 
 // fetches the tickets
@@ -50,6 +55,35 @@ export default function Board() {
     return () => { isActive = false;};
 }, []);
 
+
+useEffect(() => {
+    if (!tickets.length) return;
+    const id = setInterval(() => {
+      setTickets(prev => {
+        if (!prev.length) return prev;
+  
+        const target = prev[Math.floor(Math.random() * prev.length)];
+        const changeStatus = Math.random() < 0.5;
+        const field = changeStatus ? "status" : "priority";
+        const pool  = changeStatus ? STATUSES : PRIORITIES;
+  
+        
+        const choices = pool.filter(v => v !== target[field]);
+        if (!choices.length) return prev;
+        const nextVal = choices[Math.floor(Math.random() * choices.length)];
+  
+        // Return a new array with the updated ticket (immutability)
+        return prev.map(t =>
+          t.id === target.id
+            ? { ...t, [field]: nextVal }
+            : t
+        );
+      });
+    }, 6000 + Math.floor(Math.random() * 4000)); 
+  // Clean up
+    return () => clearInterval(id); 
+  }, [tickets.length]);
+  
 
 
 // Computes visible tickets based on search and status/priority filters
